@@ -1,121 +1,107 @@
-import { useEffect, useState } from 'react';
-import api from '../lib/api';
+import { useState } from 'react';
 import type { Product } from '../types';
 import ProductCard from '../components/ProductCard';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { Search, Filter } from 'lucide-react';
 import { Label } from '../components/ui/label';
+import { MOCK_PRODUCTS } from '../lib/mockData';
 
 const ProductListing = () => {
-    const [products, setProducts] = useState<Product[]>([]);
-    const [loading, setLoading] = useState(true);
+    // Use mock data directly
+    const [products] = useState<Product[]>(MOCK_PRODUCTS);
+    const [loading] = useState(false);
     const [search, setSearch] = useState('');
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
 
-    const fetchProducts = async () => {
-        setLoading(true);
-        try {
-            const params = new URLSearchParams();
-            if (search) params.append('search', search);
-            if (minPrice) params.append('minPrice', minPrice);
-            if (maxPrice) params.append('maxPrice', maxPrice);
+    // Filter products based on search and price
+    const filteredProducts = products.filter(product => {
+        const matchesSearch = !search || product.name.toLowerCase().includes(search.toLowerCase());
+        const matchesMinPrice = !minPrice || product.price >= parseFloat(minPrice);
+        const matchesMaxPrice = !maxPrice || product.price <= parseFloat(maxPrice);
+        return matchesSearch && matchesMinPrice && matchesMaxPrice;
+    });
 
-            const res = await api.get(`/products?${params.toString()}`);
-            setProducts(res.data.data || []); // Handling pagination structure
-        } catch (error) {
-            console.error('Failed to fetch products:', error);
-            // Fallback mock data
-            setProducts([
-                featured: true, createdAt: new Date().toISOString()
-                },
-            ]);
-        } finally {
-    setLoading(false);
-}
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
     };
 
-useEffect(() => {
-    fetchProducts();
-}, []);
+    return (
+        <div className="container px-4 py-8">
+            <h1 className="text-3xl font-bold mb-8">Belanja Semua Produk</h1>
 
-const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    fetchProducts();
-};
-
-return (
-    <div className="container px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8">Belanja Semua Produk</h1>
-
-        <div className="flex flex-col md:flex-row gap-8">
-            {/* Sidebar Filters */}
-            <aside className="w-full md:w-64 space-y-6">
-                <div className="border rounded-lg p-4 bg-gray-50">
-                    <h3 className="font-semibold mb-4 flex items-center gap-2"><Filter className="w-4 h-4" /> Filter</h3>
-                    <form onSubmit={handleSearch} className="space-y-4">
-                        <div>
-                            <Label>Cari</Label>
-                            <div className="relative">
-                                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                                <Input
-                                    type="search"
-                                    placeholder="Cari produk..."
-                                    className="pl-8"
-                                    value={search}
-                                    onChange={(e) => setSearch(e.target.value)}
-                                />
+            <div className="flex flex-col md:flex-row gap-8">
+                {/* Sidebar Filters */}
+                <aside className="w-full md:w-64 space-y-6">
+                    <div className="border rounded-lg p-4 bg-gray-50">
+                        <h3 className="font-semibold mb-4 flex items-center gap-2"><Filter className="w-4 h-4" /> Filter</h3>
+                        <form onSubmit={handleSearch} className="space-y-4">
+                            <div>
+                                <Label>Cari</Label>
+                                <div className="relative">
+                                    <Input
+                                        type="text"
+                                        placeholder="Cari produk..."
+                                        value={search}
+                                        onChange={(e) => setSearch(e.target.value)}
+                                        className="pl-10"
+                                    />
+                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                </div>
                             </div>
-                        </div>
 
-                        <div>
-                            <Label>Rentang Harga</Label>
-                            <div className="flex items-center gap-2 mt-2">
+                            <div>
+                                <Label>Harga Minimum</Label>
                                 <Input
                                     type="number"
-                                    placeholder="Min"
+                                    placeholder="0"
                                     value={minPrice}
                                     onChange={(e) => setMinPrice(e.target.value)}
                                 />
-                                <span>-</span>
+                            </div>
+
+                            <div>
+                                <Label>Harga Maksimum</Label>
                                 <Input
                                     type="number"
-                                    placeholder="Max"
+                                    placeholder="1000"
                                     value={maxPrice}
                                     onChange={(e) => setMaxPrice(e.target.value)}
                                 />
                             </div>
+
+                            <Button type="submit" className="w-full">Terapkan Filter</Button>
+                        </form>
+                    </div>
+                </aside>
+
+                {/* Products Grid */}
+                <main className="flex-1">
+                    {loading ? (
+                        <div className="text-center py-12">
+                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
                         </div>
-
-                        <Button type="submit" className="w-full">Terapkan Filter</Button>
-                    </form>
-                </div>
-            </aside>
-
-            {/* Product Grid */}
-            <div className="flex-1">
-                {loading ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {[1, 2, 3, 4, 5, 6].map(i => (
-                            <div key={i} className="h-80 bg-gray-100 rounded-lg animate-pulse"></div>
-                        ))}
-                    </div>
-                ) : products.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {products.map((product) => (
-                            <ProductCard key={product.id} product={product} />
-                        ))}
-                    </div>
-                ) : (
-                    <div className="text-center py-12 text-gray-500">
-                        Produk tidak ditemukan.
-                    </div>
-                )}
+                    ) : filteredProducts.length === 0 ? (
+                        <div className="text-center py-12">
+                            <p className="text-gray-600">Tidak ada produk ditemukan</p>
+                        </div>
+                    ) : (
+                        <>
+                            <div className="mb-4 text-sm text-gray-600">
+                                Menampilkan {filteredProducts.length} produk
+                            </div>
+                            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                                {filteredProducts.map((product) => (
+                                    <ProductCard key={product.id} product={product} />
+                                ))}
+                            </div>
+                        </>
+                    )}
+                </main>
             </div>
         </div>
-    </div>
-);
+    );
 };
 
 export default ProductListing;
