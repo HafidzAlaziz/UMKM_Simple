@@ -6,7 +6,7 @@ import { useAuth } from '../context/AuthContext';
 
 const Layout = () => {
     const { totalItems } = useCart();
-    const { user, isAuthenticated } = useAuth();
+    const { isAuthenticated } = useAuth();
 
     return (
         <div className="min-h-screen flex flex-col bg-background font-sans text-foreground">

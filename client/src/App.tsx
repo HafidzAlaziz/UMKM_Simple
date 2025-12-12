@@ -50,6 +50,14 @@ function App() {
                 <Route path="addresses" element={<Addresses />} />
                 <Route path="wishlist" element={<Wishlist />} />
               </Route>
+
+              {/* Admin Panel */}
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route path="dashboard" element={<AdminDashboard />} />
+                <Route path="products" element={<AdminProducts />} />
+                <Route path="orders" element={<AdminOrders />} />
+                <Route path="users" element={<AdminUsers />} />
+              </Route>
             </Route>
 
             <Route path="/login" element={<Login />} />
