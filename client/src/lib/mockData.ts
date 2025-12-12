@@ -6,7 +6,7 @@ export const MOCK_PRODUCTS = [
         price: 299,
         stock: 10,
         description: 'High fidelity audio experience with noise cancellation',
-        images: ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500'],
+        images: ['https://via.placeholder.com/500x500/1e40af/ffffff?text=Headphones'],
         featured: true,
         createdAt: new Date().toISOString()
     },
@@ -16,7 +16,7 @@ export const MOCK_PRODUCTS = [
         price: 150,
         stock: 5,
         description: 'Classic design meets modern functionality',
-        images: ['https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500'],
+        images: ['https://via.placeholder.com/500x500/f97316/ffffff?text=Watch'],
         featured: true,
         createdAt: new Date().toISOString()
     },
@@ -26,7 +26,7 @@ export const MOCK_PRODUCTS = [
         price: 99,
         stock: 20,
         description: 'Track your health and fitness goals',
-        images: ['https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=500'],
+        images: ['https://via.placeholder.com/500x500/10b981/ffffff?text=Tracker'],
         featured: true,
         createdAt: new Date().toISOString()
     },
@@ -36,7 +36,7 @@ export const MOCK_PRODUCTS = [
         price: 120,
         stock: 15,
         description: 'Carry your essentials in style',
-        images: ['https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500'],
+        images: ['https://via.placeholder.com/500x500/8b5cf6/ffffff?text=Backpack'],
         featured: true,
         createdAt: new Date().toISOString()
     },
@@ -46,7 +46,7 @@ export const MOCK_PRODUCTS = [
         price: 899,
         stock: 8,
         description: 'Professional photography made easy',
-        images: ['https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=500'],
+        images: ['https://via.placeholder.com/500x500/ef4444/ffffff?text=Camera'],
         featured: false,
         createdAt: new Date().toISOString()
     },
@@ -56,7 +56,7 @@ export const MOCK_PRODUCTS = [
         price: 79,
         stock: 25,
         description: 'Portable sound for any occasion',
-        images: ['https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500'],
+        images: ['https://via.placeholder.com/500x500/06b6d4/ffffff?text=Speaker'],
         featured: false,
         createdAt: new Date().toISOString()
     }
