@@ -14,8 +14,9 @@ const Layout = () => {
             <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                 <div className="container flex h-16 max-w-screen-2xl items-center justify-between px-4">
                     <div className="flex items-center gap-6">
-                        <Link to="/" className="flex items-center gap-2 font-bold text-xl text-primary">
-                            <span>UMKM<span className="text-secondary">Store</span></span>
+                        <Link to="/" className="flex items-center gap-3">
+                            <img src="/logo.png" alt="UMKM Store" className="h-10 w-10" />
+                            <span className="font-bold text-xl text-primary">UMKM<span className="text-secondary">Store</span></span>
                         </Link>
                         <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-muted-foreground">
                             <Link to="/products" className="transition-colors hover:text-foreground">Produk</Link>
