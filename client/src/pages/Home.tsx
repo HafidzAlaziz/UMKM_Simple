@@ -11,29 +11,17 @@ const Home = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchFeatured = async () => {
+        const fetchFeaturedProducts = async () => {
             try {
-                const res = await api.get('/products/featured');
-                setFeaturedProducts(res.data);
+                const response = await api.get('/products/featured');
+                const data = response.data;
+                // Handle both array and object with data property
+                setFeaturedProducts(Array.isArray(data) ? data : (data.data || []));
             } catch (error) {
-                console.error('Failed to fetch products', error);
-
-                // Fallback mock data if DB is down
+                console.error('Failed to fetch featured products:', error);
+                // Use fallback mock data if API fails
                 setFeaturedProducts([
                     {
-                        id: '1', name: 'Premium Wireless Headphones', price: 299, stock: 10,
-                        description: 'High fidelity audio', images: ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e'],
-                        featured: true, createdAt: new Date().toISOString()
-                    },
-                    {
-                        id: '2', name: 'Minimalist Watch', price: 150, stock: 5,
-                        description: 'Classic design', images: ['https://images.unsplash.com/photo-1523275335684-37898b6baf30'],
-                        featured: true, createdAt: new Date().toISOString()
-                    },
-                    {
-                        id: '3', name: 'Smart Fitness Tracker', price: 99, stock: 20,
-                        description: 'Track your health', images: ['https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6'],
-                        featured: true, createdAt: new Date().toISOString()
                     },
                     {
                         id: '4', name: 'Designer Backpack', price: 120, stock: 15,
