@@ -7,50 +7,56 @@ import { Button } from '../components/ui/button';
 import { ArrowRight } from 'lucide-react';
 
 const Home = () => {
-    const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [featuredProducts, setFeaturedProducts] = useState<Product[]>([
+        {
+            id: '1', name: 'Premium Wireless Headphones', price: 299, stock: 10,
+            description: 'High fidelity audio', images: ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e'],
+            featured: true, createdAt: new Date().toISOString()
+        },
+        {
+            id: '2', name: 'Minimalist Watch', price: 150, stock: 5,
+            description: 'Classic design', images: ['https://images.unsplash.com/photo-1523275335684-37898b6baf30'],
+            featured: true, createdAt: new Date().toISOString()
+        },
+        {
+            id: '3', name: 'Smart Fitness Tracker', price: 99, stock: 20,
+            description: 'Track your health', images: ['https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6'],
+            featured: true, createdAt: new Date().toISOString()
+        },
+        {
+            id: '4', name: 'Designer Backpack', price: 120, stock: 15,
+            description: 'Carry in style', images: ['https://images.unsplash.com/photo-1553062407-98eeb64c6a62'],
+            featured: true, createdAt: new Date().toISOString()
+        }
+    ]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        const fetchFeaturedProducts = async () => {
+        const fetchFeatured = async () => {
+            setLoading(true);
             try {
-                const response = await api.get('/products/featured');
-                const data = response.data;
-                // Handle both array and object with data property
-                setFeaturedProducts(Array.isArray(data) ? data : (data.data || []));
+                const res = await api.get('/products/featured');
+                // Only update if we get valid data
+                if (res.data && Array.isArray(res.data) && res.data.length > 0) {
+                    setFeaturedProducts(res.data);
+                } else if (res.data?.data && Array.isArray(res.data.data) && res.data.data.length > 0) {
+                    setFeaturedProducts(res.data.data);
+                }
+                // If API returns empty or invalid, keep fallback data
             } catch (error) {
-                console.error('Failed to fetch featured products:', error);
-                // Use fallback mock data if API fails
-                setFeaturedProducts([
-                    <div className="container px-4 md:px-6 relative z-10">
-                        <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
-                            <div className="space-y-4">
-                                <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
-                                    Tingkatkan Gaya Hidup dengan Produk Premium
-                                </h1>
-                                <p className="max-w-[600px] text-gray-300 md:text-xl">
-                                    Temukan koleksi pilihan dari kebutuhan klasik hingga inovasi modern. Kualitas terpercaya, desain yang akan Anda cintai.
-                                </p>
-                                <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                                    <Button asChild size="lg" className="bg-secondary text-primary hover:bg-secondary/90">
-                                        <Link to="/products">
-                                            Belanja Sekarang <ArrowRight className="ml-2 h-4 w-4" />
-                                        </Link>
-                                    </Button>
-                                    <Button asChild variant="outline" size="lg" className="border-gray-600 text-black hover:bg-white/10 hover:text-white">
-                                        <Link to="/about">Tentang Kami</Link>
-                                    </Button>
-                                </div>
-                            </div>
-                            <div className="relative mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full lg:order-last">
-                                <div className="absolute inset-0 bg-gradient-to-tr from-secondary/20 to-primary/20 mix-blend-multiply" />
-                                <img
-                                    src="https://images.unsplash.com/photo-1441986300917-64674bd600d8"
-                                    alt="Hero"
-                                    className="object-cover w-full h-full"
-                                />
-                            </div>
-                        </div>
-                    </div>
+                                    </Button >
+                                </div >
+                            </div >
+    <div className="relative mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full lg:order-last">
+        <div className="absolute inset-0 bg-gradient-to-tr from-secondary/20 to-primary/20 mix-blend-multiply" />
+        <img
+            src="https://images.unsplash.com/photo-1441986300917-64674bd600d8"
+            alt="Hero"
+            className="object-cover w-full h-full"
+        />
+    </div>
+                        </div >
+                    </div >
             </section >
 
     {/* Featured Products */ }
